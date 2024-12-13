@@ -11,7 +11,7 @@ def runQuery(query):
     return st.session_state.db.run(query) if st.session_state.db else "Please connect to database"
 
 def getDatabaseSchema():
-    return st.session_state.db.get_table_info() if st.session_state.db else "Please connect to database"
+    return st.session_state.db.get_table_info() if st.session_state.db else "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"
 
 # Replace ChatOllama with ChatOpenAI
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, openai_api_key="your-openai-key")
