@@ -44,6 +44,7 @@ mypy-extensions==1.0.0
 mysql-connector-python==9.0.0
 narwhals==1.17.0
 openai==1.57.3
+numpy
 orjson==3.10.12
 packaging==24.2
 pandas==2.0.3
