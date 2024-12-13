@@ -43,7 +43,7 @@ multidict==6.1.0
 mypy-extensions==1.0.0
 mysql-connector-python==9.0.0
 narwhals==1.17.0
-numpy==2.2.0
+numpy==2.0.0
 openai==1.57.3
 orjson==3.10.12
 packaging==24.2
