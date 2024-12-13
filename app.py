@@ -8,13 +8,13 @@ def connectDatabase(username, port, host, password, database):
     st.session_state.db = SQLDatabase.from_uri(mysql_uri)
 
 def runQuery(query):
-    return st.session_state.db.run(query) if st.session_state.db else "Please connect to database"
+    return st.session_state.db.get_table_info() if st.session_state.db else "Please connect to database"
 
 def getDatabaseSchema():
-    return st.session_state.db.get_table_info() if st.session_state.db else "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"
+    return st.session_state.db.get_table_info() if st.session_state.db else "Please connect to database"
 
 # Replace ChatOllama with ChatOpenAI
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, openai_api_key="your-openai-key")
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, openai_api_key="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")
 
 def getQueryFromLLM(question):
     template = """below is the schema of MYSQL database, read the schema carefully about the table and column names. Also take care of table or column name case sensitivity.
