@@ -1,24 +1,20 @@
 import streamlit as st
-from langchain_community.chat_models import ChatOllama
-from langchain_community.utilities import SQLDatabase
-from langchain_core.prompts import ChatPromptTemplate
-
+from langchain.chat_models import ChatOpenAI
+from langchain.utilities import SQLDatabase
+from langchain.prompts import ChatPromptTemplate
 
 def connectDatabase(username, port, host, password, database):
     mysql_uri = f"mysql+mysqlconnector://{username}:{password}@{host}:{port}/{database}"
     st.session_state.db = SQLDatabase.from_uri(mysql_uri)
 
-
 def runQuery(query):
     return st.session_state.db.run(query) if st.session_state.db else "Please connect to database"
-
 
 def getDatabaseSchema():
     return st.session_state.db.get_table_info() if st.session_state.db else "Please connect to database"
 
-
-llm = ChatOllama(model="llama3")
-
+# Replace ChatOllama with ChatOpenAI
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, openai_api_key="your-openai-key")
 
 def getQueryFromLLM(question):
     template = """below is the schema of MYSQL database, read the schema carefully about the table and column names. Also take care of table or column name case sensitivity.
@@ -48,7 +44,6 @@ def getQueryFromLLM(question):
         "schema": getDatabaseSchema()
     })
     return response.content
-
 
 def getResponseForQueryResult(question, query, result):
     template2 = """below is the schema of MYSQL database, read the schema carefully about the table and column names of each table.
@@ -92,21 +87,24 @@ def getResponseForQueryResult(question, query, result):
 
     return response.content
 
-
 st.set_page_config(
     page_icon="🤖",
-    page_title="Chat with MYSQL DB",
+    page_title="AI-Powered MySQL Query Assistant",
     layout="centered"
 )
 
-question = st.chat_input('Chat with your mysql database')
+# Add a heading to the page
+st.title("🔧 AI-Powered MySQL Query Assistant")
+st.subheader("chat your MySQL database with natural language")
+
+question = st.chat_input('query with your database')
 
 if "chat" not in st.session_state:
     st.session_state.chat = []
 
 if question:
     if "db" not in st.session_state:
-        st.error('Please connect database first.')
+        st.error('Please connect to the database first.')
     else:
         st.session_state.chat.append({
             "role": "user",
@@ -127,14 +125,13 @@ for chat in st.session_state.chat:
     st.chat_message(chat['role']).markdown(chat['content'])
 
 with st.sidebar:
-    st.title('Connect to database')
-    st.text_input(label="Host", key="host", value="localhost")
+    st.title('Connect to Database')
+    st.text_input(label="Host", key="host", value="10.10.20.127")
     st.text_input(label="Port", key="port", value="3306")
-    st.text_input(label="Username", key="username", value="root")
+    st.text_input(label="Username", key="username", value="myadmin")
     st.text_input(label="Password", key="password", value="", type="password")
-    st.text_input(label="Database", key="database", value="rag_test")
+    st.text_input(label="Database", key="database", value="MyDB")
     connectBtn = st.button("Connect")
-
 
 if connectBtn:
     connectDatabase(
