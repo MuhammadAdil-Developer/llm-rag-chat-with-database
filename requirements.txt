@@ -80,6 +80,4 @@ urllib3==2.2.3
 watchdog==4.0.2
 yarl==1.15.2
 zipp==3.20.2
-setuptools
-setuptools
-python3-distutils
+setuptools==75.6.0
